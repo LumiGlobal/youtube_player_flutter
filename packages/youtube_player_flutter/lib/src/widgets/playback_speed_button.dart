@@ -76,7 +76,10 @@ class _PlaybackSpeedButtonState extends State<PlaybackSpeedButton> {
   PopupMenuEntry<double> _popUpItem(String text, double rate) {
     return CheckedPopupMenuItem(
       checked: _controller.value.playbackRate == rate,
-      child: Text(text),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
       value: rate,
     );
   }
