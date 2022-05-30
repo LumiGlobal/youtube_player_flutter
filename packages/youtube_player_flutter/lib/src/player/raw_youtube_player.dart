@@ -4,10 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../enums/player_state.dart';
 import '../utils/youtube_meta_data.dart';
 import '../utils/youtube_player_controller.dart';
+import 'youtube_player.dart';
 
 /// A raw youtube player widget which interacts with the underlying webview inorder to play YouTube videos.
 ///
@@ -229,6 +231,27 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
           );
         }
       },
+      // TODO remove
+      onUpdateVisitedHistory: (webController, uri, ___) async {
+        // print(uri?.queryParameters['v']);
+        // // TODO launch new window
+        // if (uri != null) {
+        //   await canLaunch(uri.toString())
+        //       ? await launch(uri.toString())
+        //       : throw ('Could not launch $uri');
+        // }
+      },
+      shouldOverrideUrlLoading: (webController, navigationAction) async {
+        if (controller?.value.isReady == true) {
+          // print(await webController.getUrl());
+          // var url = await webController.getUrl();
+          // await canLaunchUrl(url!)
+          //     ? await launchUrl(url)
+          //     : throw ('Could not launch $url');
+          // TODO launch in browser
+          return NavigationActionPolicy.CANCEL;
+        }
+      },
     );
   }
 
@@ -246,7 +269,7 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
                 position: fixed;
                 height: 100%;
                 width: 100%;
-                pointer-events: none;
+                pointer-events: auto;
             }
         </style>
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
@@ -266,10 +289,10 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
                     width: '100%',
                     videoId: '${controller!.initialVideoId}',
                     playerVars: {
-                        'controls': 0,
+                        'controls': ${controller!.flags.hideControls ? 1 : 0},
                         'playsinline': 1,
                         'enablejsapi': 1,
-                        'fs': 0,
+                        'fs': 1,
                         'rel': 0,
                         'showinfo': 0,
                         'iv_load_policy': 3,
