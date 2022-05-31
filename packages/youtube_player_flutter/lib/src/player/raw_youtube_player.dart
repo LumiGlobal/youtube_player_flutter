@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../enums/player_state.dart';
 import '../utils/youtube_meta_data.dart';
@@ -233,23 +232,13 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
       },
       // TODO remove
       onUpdateVisitedHistory: (webController, uri, ___) async {
-        // print(uri?.queryParameters['v']);
-        // // TODO launch new window
-        // if (uri != null) {
-        //   await canLaunch(uri.toString())
-        //       ? await launch(uri.toString())
-        //       : throw ('Could not launch $uri');
-        // }
+        // Possible improvement use uri here to launch url
       },
       shouldOverrideUrlLoading: (webController, navigationAction) async {
         if (controller?.value.isReady == true) {
-          // print(await webController.getUrl());
-          // var url = await webController.getUrl();
-          // await canLaunchUrl(url!)
-          //     ? await launchUrl(url)
-          //     : throw ('Could not launch $url');
-          // TODO launch in browser
           return NavigationActionPolicy.CANCEL;
+        } else {
+          return null;
         }
       },
     );
