@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_inappwebview: ^5.4.3+7
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   flutter_test:
