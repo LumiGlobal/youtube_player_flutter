@@ -62,7 +62,7 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
     _webController = Completer();
     controller = widget.controller;
     _value = controller.value;
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -86,6 +86,7 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
 
   @override
   Widget build(BuildContext context) {
+    print(player);
     return InAppWebView(
       key: ValueKey(controller.hashCode),
       initialData: InAppWebViewInitialData(
@@ -139,7 +140,7 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
