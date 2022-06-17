@@ -86,7 +86,6 @@ class _MobileYoutubePlayerState extends State<RawYoutubePlayer>
 
   @override
   Widget build(BuildContext context) {
-    print(player);
     return InAppWebView(
       key: ValueKey(controller.hashCode),
       initialData: InAppWebViewInitialData(
