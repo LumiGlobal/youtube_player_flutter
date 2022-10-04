@@ -15,7 +15,6 @@ dependencies:
   webview_flutter: ^3.0.4
   url_launcher: ^6.1.5
   youtube_player_iframe_web: ^1.0.4
-  mocktail: ^0.3.0
 
 dev_dependencies:
   flutter_test:
