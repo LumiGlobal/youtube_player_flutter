@@ -40,9 +40,7 @@ class YoutubePlayer extends StatefulWidget {
     this.backgroundColor,
     this.userAgent,
     this.enableFullScreenOnVerticalDrag = true,
-  })
-
-  ;
+  });
 
   /// The [controller] for this player.
   final YoutubePlayerController? controller;
