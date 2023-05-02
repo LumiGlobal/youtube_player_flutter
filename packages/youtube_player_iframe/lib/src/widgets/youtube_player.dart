@@ -99,7 +99,11 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
     if (widget.enableFullScreenOnVerticalDrag) {
       player = GestureDetector(
         onVerticalDragUpdate: _fullscreenGesture,
-        child: player,
+        child: SafeArea(
+          left: false,
+          right: false,
+          child: player,
+        ),
       );
     }
 
