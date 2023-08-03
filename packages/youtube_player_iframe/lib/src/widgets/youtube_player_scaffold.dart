@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:io';
+
+import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +39,7 @@ class YoutubePlayerScaffold extends StatefulWidget {
     this.enableFullScreenOnVerticalDrag = true,
     this.backgroundColor,
     @Deprecated('Unused parameter. Use `YoutubePlayerParam.userAgent` instead.')
-        this.userAgent,
+    this.userAgent,
   });
 
   /// Builds the child widget.
@@ -200,6 +203,19 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    if (Platform.isIOS) {
+      final isFullScreenEnabled = YoutubePlayerControllerProvider.of(context)
+          .value
+          .fullScreenOption
+          .enabled;
+
+      return ConditionalWillPopScope(
+        onWillPop: _handleFullScreenBackAction,
+        shouldAddCallback: isFullScreenEnabled,
+        child: widget.child,
+      );
+    }
+
     return WillPopScope(
       onWillPop: _handleFullScreenBackAction,
       child: widget.child,
