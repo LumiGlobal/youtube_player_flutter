@@ -137,10 +137,6 @@ class _YoutubePlayerScaffoldState extends State<YoutubePlayerScaffold> {
                           if (value.fullScreenOption.enabled) player
                         ],
                       );
-                      // if (value.fullScreenOption.enabled) {
-                      //   return player;
-                      // }
-                      // return widget.builder(context, player);
                     },
                   ),
                 );
