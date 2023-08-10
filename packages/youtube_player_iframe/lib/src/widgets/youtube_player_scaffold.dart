@@ -177,7 +177,7 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
 
     if (widget.auto) WidgetsBinding.instance.addObserver(this);
     SystemChrome.setPreferredOrientations(_deviceOrientations);
-    SystemChrome.setEnabledSystemUIMode(_uiMode);
+    updateSystemUIMode();
   }
 
   @override
@@ -186,7 +186,7 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
 
     if (oldWidget.fullScreenOption != widget.fullScreenOption) {
       SystemChrome.setPreferredOrientations(_deviceOrientations);
-      SystemChrome.setEnabledSystemUIMode(_uiMode);
+      updateSystemUIMode();
     }
   }
 
@@ -247,10 +247,13 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
     return widget.defaultOrientations;
   }
 
-  SystemUiMode get _uiMode {
-    return widget.fullScreenOption.enabled
-        ? SystemUiMode.immersive
-        : SystemUiMode.edgeToEdge;
+  Future<void> updateSystemUIMode() async {
+    if (widget.fullScreenOption.enabled) {
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    } else {
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: SystemUiOverlay.values);
+    }
   }
 
   Future<bool> _handleFullScreenBackAction() async {
