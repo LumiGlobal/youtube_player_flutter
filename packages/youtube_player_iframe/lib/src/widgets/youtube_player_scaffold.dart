@@ -129,6 +129,7 @@ class _YoutubePlayerScaffoldState extends State<YoutubePlayerScaffold> {
                   child: Builder(
                     builder: (context) {
                       return Stack(
+                        fit: StackFit.expand,
                         children: [
                           Visibility(
                               visible: !value.fullScreenOption.enabled,
