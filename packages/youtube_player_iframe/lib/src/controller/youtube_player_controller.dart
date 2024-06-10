@@ -47,7 +47,8 @@ class YoutubePlayerController implements YoutubePlayerIFrameAPI {
       },
       onNavigationRequest: (request) {
         final uri = Uri.tryParse(request.url);
-        return _decideNavigation(uri);
+        return _decideNavigation(uri,
+            customErrorCallback: params.customErrorCallback);
       },
     );
 
@@ -624,7 +625,10 @@ class YoutubePlayerController implements YoutubePlayerIFrameAPI {
     return videoStateStream.map((state) => state.position);
   }
 
-  NavigationDecision _decideNavigation(Uri? uri) {
+  NavigationDecision _decideNavigation(
+    Uri? uri, {
+    Function(String)? customErrorCallback,
+  }) {
     if (uri == null) return NavigationDecision.prevent;
 
     final params = uri.queryParameters;
@@ -649,7 +653,13 @@ class YoutubePlayerController implements YoutubePlayerIFrameAPI {
       case 'emb_rel_end':
       case 'emb_info':
         final videoId = params['v'];
-        if (videoId != null) loadVideoById(videoId: videoId);
+        if (videoId != null) {
+          if (customErrorCallback != null) {
+            customErrorCallback(videoId);
+          } else {
+            loadVideoById(videoId: videoId);
+          }
+        }
         break;
       case 'emb_title':
       case 'emb_logo':

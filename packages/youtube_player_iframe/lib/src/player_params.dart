@@ -110,6 +110,9 @@ class YoutubePlayerParams {
   /// The user agent for the player.
   final String? userAgent;
 
+  /// Custom callback that will be called in the YoutubePlayerController's navigation delegate
+  final Function(String)? customErrorCallback;
+
   /// Defines player parameters for the youtube player.
   const YoutubePlayerParams({
     this.mute = false,
@@ -128,6 +131,7 @@ class YoutubePlayerParams {
     this.playsInline = true,
     this.strictRelatedVideos = false,
     this.userAgent,
+    this.customErrorCallback,
   });
 
   /// Creates [Map] representation of [YoutubePlayerParams].
