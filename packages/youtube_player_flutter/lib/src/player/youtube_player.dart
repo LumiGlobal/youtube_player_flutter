@@ -39,8 +39,26 @@ import 'raw_youtube_player.dart';
 /// ```
 ///
 class YoutubePlayer extends StatefulWidget {
-  /// Sets [Key] as an identification to underlying web view associated to the player.
-  final Key? key;
+  /// Creates [YoutubePlayer] widget.
+  const YoutubePlayer({
+    super.key,
+    required this.controller,
+    this.width,
+    this.aspectRatio = 16 / 9,
+    this.controlsTimeOut = const Duration(seconds: 3),
+    this.bufferIndicator,
+    Color? progressIndicatorColor,
+    ProgressBarColors? progressColors,
+    this.onReady,
+    this.onEnded,
+    this.liveUIColor = Colors.red,
+    this.topActions,
+    this.bottomActions,
+    this.actionsPadding = const EdgeInsets.all(8.0),
+    this.thumbnail,
+    this.showVideoProgressIndicator = false,
+  })  : progressColors = progressColors ?? const ProgressBarColors(),
+        progressIndicatorColor = progressIndicatorColor ?? Colors.red;
 
   /// A [YoutubePlayerController] to control the player.
   final YoutubePlayerController controller;
@@ -130,27 +148,6 @@ class YoutubePlayer extends StatefulWidget {
   /// {@endtemplate}
   final bool showVideoProgressIndicator;
 
-  /// Creates [YoutubePlayer] widget.
-  const YoutubePlayer({
-    this.key,
-    required this.controller,
-    this.width,
-    this.aspectRatio = 16 / 9,
-    this.controlsTimeOut = const Duration(seconds: 3),
-    this.bufferIndicator,
-    Color? progressIndicatorColor,
-    ProgressBarColors? progressColors,
-    this.onReady,
-    this.onEnded,
-    this.liveUIColor = Colors.red,
-    this.topActions,
-    this.bottomActions,
-    this.actionsPadding = const EdgeInsets.all(8.0),
-    this.thumbnail,
-    this.showVideoProgressIndicator = false,
-  })  : progressColors = progressColors ?? const ProgressBarColors(),
-        progressIndicatorColor = progressIndicatorColor ?? Colors.red;
-
   /// Converts fully qualified YouTube Url to video id.
   ///
   /// If videoId is passed as url then no conversion is done.
@@ -187,7 +184,7 @@ class YoutubePlayer extends StatefulWidget {
           : 'https://i3.ytimg.com/vi/$videoId/$quality.jpg';
 
   @override
-  _YoutubePlayerState createState() => _YoutubePlayerState();
+  State<YoutubePlayer> createState() => _YoutubePlayerState();
 }
 
 class _YoutubePlayerState extends State<YoutubePlayer> {
@@ -409,9 +406,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
             ),
           ],
           if (!controller.flags.hideControls)
-            Center(
-              child: PlayPauseButton(),
-            ),
+            const Center(child: PlayPauseButton()),
           if (controller.value.hasError) errorWidget,
         ],
       ),
