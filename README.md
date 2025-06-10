@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/sarbagyastha/youtube_player_flutter/master/packages/youtube_player_iframe/screenshots/logo.png" height="100" alt="Youtube Player iFrame" />
+<img src="https://raw.githubusercontent.com/sarbagyastha/youtube_player_flutter/main/packages/youtube_player_iframe/screenshots/logo.png" height="100" alt="Youtube Player iFrame" />
 </p>
 <h2 align="center">Youtube Player iFrame</h2>
 
@@ -7,7 +7,7 @@
 <p align="center">
 <a href="https://pub.dartlang.org/packages/youtube_player_iframe"><img src="https://img.shields.io/pub/v/youtube_player_iframe" alt="Pub"></a>
 <a href="https://youtube.sarbagyastha.com.np"><img src="https://img.shields.io/badge/Web-Demo-deeppink.svg" alt="Web Demo"></a>
-<a href="https://github.com/sarbagyastha/youtube_player_flutter/blob/master/packages/youtube_player_iframe/LICENSE"><img src="https://img.shields.io/badge/License-BSD--3-blueviolet" alt="BSD-3 License"></a>
+<a href="https://github.com/sarbagyastha/youtube_player_flutter/blob/main/packages/youtube_player_iframe/LICENSE"><img src="https://img.shields.io/badge/License-BSD--3-blueviolet" alt="BSD-3 License"></a>
 <a href="https://github.com/sarbagyastha/youtube_player_flutter"><img src="https://img.shields.io/github/languages/top/sarbagyastha/youtube_player_flutter?color=9cf" alt="Top Language"></a>
 <a href="https://github.com/sarbagyastha/youtube_player_flutter/issues"><img src="https://img.shields.io/github/issues/sarbagyastha/youtube_player_flutter" alt="GitHub issues"></a>
 <a href="https://github.com/sarbagyastha/youtube_player_flutter"><img src="https://img.shields.io/github/stars/sarbagyastha/youtube_player_flutter" alt="Stars"></a>
@@ -17,7 +17,7 @@
 
 Flutter plugin for seamlessly playing or streaming YouTube videos inline using the official [**iFrame Player API**](https://developers.google.com/youtube/iframe_api_reference). This package offers extensive customization by exposing nearly the full range of the iFrame Player API's features, ensuring complete flexibility and control.
 
-<a href="https://youtube.sarbagyastha.com.np"><img src="https://raw.githubusercontent.com/sarbagyastha/youtube_player_flutter/master/packages/youtube_player_iframe/screenshots/demo.png" width="200" alt="Demo Screenshot"></a>
+<a href="https://youtube.sarbagyastha.com.np"><img src="https://raw.githubusercontent.com/sarbagyastha/youtube_player_flutter/main/packages/youtube_player_iframe/screenshots/demo.png" width="200" alt="Demo Screenshot"></a>
 
 
 ## Features 🌟
@@ -104,8 +104,8 @@ YoutubePlayerControllerProvider(
   controller: _controller,
   child: Builder(
     builder: (context){
-      // Access the controller as: 
-      // `YoutubePlayerControllerProvider.of(context)` 
+      // Access the controller as:
+      // `YoutubePlayerControllerProvider.of(context)`
       // or `controller.ytController`.
     },
   ),
@@ -121,7 +121,7 @@ YoutubeValueBuilder(
    controller: _controller, // This can be omitted, if using `YoutubePlayerControllerProvider`
    builder: (context, value) {
       return IconButton(
-         icon: Icon( 
+         icon: Icon(
            value.playerState == PlayerState.playing
              ? Icons.pause
              : Icons.play_arrow,
