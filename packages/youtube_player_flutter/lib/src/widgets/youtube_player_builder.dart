@@ -67,18 +67,6 @@ class _YoutubePlayerBuilderState extends State<YoutubePlayerBuilder>
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    final player = Container(
-      key: playerKey,
-      child: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, _) {
-          final controller = widget.player.controller;
-          if (controller.value.isFullScreen) {
-            widget.player.controller.toggleFullScreenMode();
-          } else {
-            Navigator.pop(context);
-=======
     final orientation = MediaQuery.orientationOf(context);
     final height = MediaQuery.sizeOf(context).height;
 
@@ -92,7 +80,6 @@ class _YoutubePlayerBuilderState extends State<YoutubePlayerBuilder>
           final controller = widget.player.controller;
           if (controller.value.isFullScreen) {
             widget.player.controller.toggleFullScreenMode();
->>>>>>> develop
           }
         },
         child: widget.player,
