@@ -133,7 +133,7 @@ If you're using `webview_flutter` alongside, then remove it from dependencies. T
 
 * From now on, `YoutubePlayerController` is to be passed to the player explicitly. *(See the updated readme)*
 * Removed `context` and `videoId` properties from `YoutubePlayer`.
-* `flags` property is moved to `YoutubePlayerController` from `YoutubePlayer`. 
+* `flags` property is moved to `YoutubePlayerController` from `YoutubePlayer`.
 Since flags were only needed for the first time when player initializes.
 * `showVideoProgressIndicator` property moved to `YoutubePlayer`.
 
@@ -143,7 +143,7 @@ Since flags were only needed for the first time when player initializes.
 
 ## 5.2.0
 **BREAKING CHANGES**
-* Renamed `videoId` property in YoutubePlayer to `initialVideoId`. 
+* Renamed `videoId` property in YoutubePlayer to `initialVideoId`.
 * From now on changing video id must be done using either [load()](https://pub.dev/documentation/youtube_player_flutter/latest/youtube_player_flutter/YoutubePlayerController/load.html) or [cue()](https://pub.dev/documentation/youtube_player_flutter/latest/youtube_player_flutter/YoutubePlayerController/cue.html).
 * **(Fixed)** Video playing sound only, on videoId change. [Issue #99](https://github.com/sarbagyastha/youtube_player_flutter/issues/99)
 * **(Improvement)** Minor optimizations.
@@ -173,15 +173,15 @@ Since flags were only needed for the first time when player initializes.
 
 ## 4.1.0
 * **Feature Added** Button to change playback rate in player.
-* Added `setPlaybackRate` method to `YoutubePlayerController`. [Issue #48](https://github.com/sarbagyastha/youtube_player_flutter/issues/48) 
-* **(Improvement)** Playback behaviour synced with `AppLifeCycle` [Issue #41](https://github.com/sarbagyastha/youtube_player_flutter/issues/41) 
+* Added `setPlaybackRate` method to `YoutubePlayerController`. [Issue #48](https://github.com/sarbagyastha/youtube_player_flutter/issues/48)
+* **(Improvement)** Playback behaviour synced with `AppLifeCycle` [Issue #41](https://github.com/sarbagyastha/youtube_player_flutter/issues/41)
 
 ## 4.0.0+2
 * Fix error reports in LiveUI. [PR#44](https://github.com/sarbagyastha/youtube_player_flutter/pull/44)
 * Added `startAt` property.
 
 ## 4.0.0+1
-**BREAKING CHANGES** 
+**BREAKING CHANGES**
 * `YoutubePLayerScaffold` has been removed.
 * Improved Orientations
 * Uses `webview_flutter` instead of `ytview`
@@ -189,7 +189,7 @@ Since flags were only needed for the first time when player initializes.
 
 ## 3.0.0
 * **BREAKING CHANGES** See Migrating to 3.x.x for detail.
-* Faster fullscreen toggling. 
+* Faster fullscreen toggling.
 * Toggles fullscreen on orientation change. [Issue #3](https://github.com/sarbagyastha/youtube_player_flutter/issues/3).
 * Option to add own custom thumbnail.
 * **(Fixed)** Video stuck at unknown state [Issue #24](https://github.com/sarbagyastha/youtube_player_flutter/issues/24).
@@ -205,11 +205,11 @@ Since flags were only needed for the first time when player initializes.
 
 ## 1.2.0
 * Added `actions` property, which can be used to add menus in top bar of video. See example for details.
-* Added option to hide fullscreen button. 
+* Added option to hide fullscreen button.
 * **(Fixed)** Current position always showing 00:00 [Issue #17](https://github.com/sarbagyastha/youtube_player_flutter/issues/17)
 
 ## 1.1.1+1
-* Updated dart constraint to `>=2.2.0 <3.0.0`*. 
+* Updated dart constraint to `>=2.2.0 <3.0.0`*.
 * **(Fixed)** Parsing Exceptions.
 
 ## 1.1.1

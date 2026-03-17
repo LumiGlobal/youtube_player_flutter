@@ -285,7 +285,6 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
                     },
                 });
             }
-
             function sendPlayerStateChange(playerState) {
                 clearTimeout(timerId);
                 window.flutter_inappwebview.callHandler('StateChange', playerState);
@@ -294,7 +293,6 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
                     sendVideoData(player);
                 }
             }
-
             function sendVideoData(player) {
                 var videoData = {
                     'duration': player.getDuration(),
@@ -304,73 +302,59 @@ class _RawYoutubePlayerState extends State<RawYoutubePlayer>
                 };
                 window.flutter_inappwebview.callHandler('VideoData', videoData);
             }
-
             function startSendCurrentTimeInterval() {
                 timerId = setInterval(function () {
                     window.flutter_inappwebview.callHandler('VideoTime', player.getCurrentTime(), player.getVideoLoadedFraction());
                 }, 100);
             }
-
             function play() {
                 player.playVideo();
                 return '';
             }
-
             function pause() {
                 player.pauseVideo();
                 return '';
             }
-
             function loadById(loadSettings) {
                 player.loadVideoById(loadSettings);
                 return '';
             }
-
             function cueById(cueSettings) {
                 player.cueVideoById(cueSettings);
                 return '';
             }
-
             function loadPlaylist(playlist, index, startAt) {
                 player.loadPlaylist(playlist, 'playlist', index, startAt);
                 return '';
             }
-
             function cuePlaylist(playlist, index, startAt) {
                 player.cuePlaylist(playlist, 'playlist', index, startAt);
                 return '';
             }
-
             function mute() {
                 player.mute();
                 return '';
             }
-
             function unMute() {
                 player.unMute();
                 return '';
             }
-
             function setVolume(volume) {
                 player.setVolume(volume);
                 return '';
             }
-
             function seekTo(position, seekAhead) {
                 player.seekTo(position, seekAhead);
                 return '';
             }
-
             function setSize(width, height) {
                 player.setSize(width, height);
                 return '';
             }
-
             function setPlaybackRate(rate) {
                 player.setPlaybackRate(rate);
                 return '';
             }
-
             function setTopMargin(margin) {
                 document.getElementById("player").style.marginTop = margin;
                 return '';

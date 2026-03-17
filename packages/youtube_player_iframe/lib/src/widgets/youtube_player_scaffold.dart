@@ -2,6 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:io';
+
+import 'package:cupertino_will_pop_scope/cupertino_will_pop_scope.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -125,9 +128,16 @@ class _YoutubePlayerScaffoldState extends State<YoutubePlayerScaffold> {
                   fullScreenOption: value.fullScreenOption,
                   child: Builder(
                     builder: (context) {
-                      if (value.fullScreenOption.enabled) return player;
-
-                      return widget.builder(context, player);
+                      return Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Visibility(
+                              visible: !value.fullScreenOption.enabled,
+                              maintainState: true,
+                              child: widget.builder(context, player)),
+                          if (value.fullScreenOption.enabled) player
+                        ],
+                      );
                     },
                   ),
                 );
@@ -168,7 +178,7 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
     canPop = Navigator.of(context).canPop();
     if (widget.auto) WidgetsBinding.instance.addObserver(this);
     SystemChrome.setPreferredOrientations(_deviceOrientations);
-    SystemChrome.setEnabledSystemUIMode(_uiMode);
+    updateSystemUIMode();
   }
 
   @override
@@ -177,7 +187,7 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
 
     if (oldWidget.fullScreenOption != widget.fullScreenOption) {
       SystemChrome.setPreferredOrientations(_deviceOrientations);
-      SystemChrome.setEnabledSystemUIMode(_uiMode);
+      updateSystemUIMode();
     }
   }
 
@@ -201,9 +211,21 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: canPop,
-      onPopInvokedWithResult: _handleFullScreenBackAction,
+    if (Platform.isIOS) {
+      final isFullScreenEnabled = YoutubePlayerControllerProvider.of(context)
+          .value
+          .fullScreenOption
+          .enabled;
+
+      return ConditionalWillPopScope(
+        onWillPop: _handleFullScreenBackAction,
+        shouldAddCallback: isFullScreenEnabled,
+        child: widget.child,
+      );
+    }
+
+    return WillPopScope(
+      onWillPop: _handleFullScreenBackAction,
       child: widget.child,
     );
   }
@@ -226,17 +248,21 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
     return widget.defaultOrientations;
   }
 
-  SystemUiMode get _uiMode {
-    return widget.fullScreenOption.enabled
-        ? SystemUiMode.immersive
-        : SystemUiMode.edgeToEdge;
+  Future<void> updateSystemUIMode() async {
+    if (widget.fullScreenOption.enabled) {
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    } else {
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: SystemUiOverlay.values);
+    }
   }
 
-  void _handleFullScreenBackAction(bool didPop, _) {
-    if (didPop) return;
-
+  Future<bool> _handleFullScreenBackAction() async {
     if (mounted && widget.fullScreenOption.enabled) {
       YoutubePlayerControllerProvider.of(context).exitFullScreen();
+      return false;
     }
+
+    return true;
   }
 }

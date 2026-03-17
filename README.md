@@ -104,8 +104,8 @@ YoutubePlayerControllerProvider(
   controller: _controller,
   child: Builder(
     builder: (context){
-      // Access the controller as: 
-      // `YoutubePlayerControllerProvider.of(context)` 
+      // Access the controller as:
+      // `YoutubePlayerControllerProvider.of(context)`
       // or `controller.ytController`.
     },
   ),
@@ -121,7 +121,7 @@ YoutubeValueBuilder(
    controller: _controller, // This can be omitted, if using `YoutubePlayerControllerProvider`
    builder: (context, value) {
       return IconButton(
-         icon: Icon( 
+         icon: Icon(
            value.playerState == PlayerState.playing
              ? Icons.pause
              : Icons.play_arrow,

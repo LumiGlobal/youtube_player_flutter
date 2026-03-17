@@ -295,17 +295,20 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          RawYoutubePlayer(
-            key: widget.key,
-            onEnded: (YoutubeMetaData metaData) {
-              if (controller.flags.loop) {
-                controller.load(controller.metadata.videoId,
-                    startAt: controller.flags.startAt,
-                    endAt: controller.flags.endAt);
-              }
+          SafeArea(
+            bottom: false,
+            child: RawYoutubePlayer(
+              key: widget.key,
+              onEnded: (YoutubeMetaData metaData) {
+                if (controller.flags.loop) {
+                  controller.load(controller.metadata.videoId,
+                      startAt: controller.flags.startAt,
+                      endAt: controller.flags.endAt);
+                }
 
-              widget.onEnded?.call(metaData);
-            },
+                widget.onEnded?.call(metaData);
+              },
+            ),
           ),
           if (!controller.flags.hideThumbnail)
             AnimatedOpacity(
@@ -341,54 +344,62 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: AnimatedOpacity(
-                opacity: !controller.flags.hideControls &&
-                        controller.value.isControlsVisible
-                    ? 1
-                    : 0,
-                duration: const Duration(milliseconds: 300),
-                child: controller.flags.isLive
-                    ? LiveBottomBar(
-                        liveUIColor: widget.liveUIColor,
-                        showLiveFullscreenButton:
-                            widget.controller.flags.showLiveFullscreenButton,
-                      )
-                    : Padding(
-                        padding: widget.bottomActions == null
-                            ? const EdgeInsets.all(0.0)
-                            : widget.actionsPadding,
-                        child: Row(
-                          children: widget.bottomActions ??
-                              [
-                                const SizedBox(width: 14.0),
-                                const CurrentPosition(),
-                                const SizedBox(width: 8.0),
-                                ProgressBar(
-                                  isExpanded: true,
-                                  colors: widget.progressColors,
-                                ),
-                                const RemainingDuration(),
-                                const PlaybackSpeedButton(),
-                                const FullScreenButton(),
-                              ],
+              child: IgnorePointer(
+                ignoring: controller.flags.hideControls ||
+                    !controller.value.isControlsVisible,
+                child: AnimatedOpacity(
+                  opacity: !controller.flags.hideControls &&
+                          controller.value.isControlsVisible
+                      ? 1
+                      : 0,
+                  duration: const Duration(milliseconds: 300),
+                  child: controller.flags.isLive
+                      ? LiveBottomBar(
+                          liveUIColor: widget.liveUIColor,
+                          showLiveFullscreenButton:
+                              widget.controller.flags.showLiveFullscreenButton,
+                        )
+                      : Padding(
+                          padding: widget.bottomActions == null
+                              ? const EdgeInsets.all(0.0)
+                              : widget.actionsPadding,
+                          child: Row(
+                            children: widget.bottomActions ??
+                                [
+                                  const SizedBox(width: 14.0),
+                                  CurrentPosition(),
+                                  const SizedBox(width: 8.0),
+                                  ProgressBar(
+                                    isExpanded: true,
+                                    colors: widget.progressColors,
+                                  ),
+                                  RemainingDuration(),
+                                  const PlaybackSpeedButton(),
+                                  FullScreenButton(),
+                                ],
+                          ),
                         ),
-                      ),
+                ),
               ),
             ),
             Positioned(
               top: 0,
               left: 0,
               right: 0,
-              child: AnimatedOpacity(
-                opacity: !controller.flags.hideControls &&
-                        controller.value.isControlsVisible
-                    ? 1
-                    : 0,
-                duration: const Duration(milliseconds: 300),
-                child: Padding(
-                  padding: widget.actionsPadding,
-                  child: Row(
-                    children: widget.topActions ?? [Container()],
+              child: IgnorePointer(
+                ignoring: controller.flags.hideControls ||
+                    controller.value.isControlsVisible,
+                child: AnimatedOpacity(
+                  opacity: !controller.flags.hideControls &&
+                          controller.value.isControlsVisible
+                      ? 1
+                      : 0,
+                  duration: const Duration(milliseconds: 300),
+                  child: Padding(
+                    padding: widget.actionsPadding,
+                    child: Row(
+                      children: widget.topActions ?? [Container()],
+                    ),
                   ),
                 ),
               ),
