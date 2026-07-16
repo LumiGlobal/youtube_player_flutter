@@ -1,13 +1,11 @@
 // Copyright 2020 Sarbagya Dhaubanjar. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Use of this source code is governed by a BSD-3-Clause license that can be
 // found in the LICENSE file.
 
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-
-export 'package:youtube_player_iframe/src/enums/pointer_events.dart';
 
 /// Defines player parameters for [YoutubePlayer].
 class YoutubePlayerParams {
@@ -96,7 +94,7 @@ class YoutubePlayerParams {
 
   /// This parameter provides an extra security measure for the IFrame API and is only supported for IFrame embeds.
   ///
-  /// Specify your domain as the value.
+  /// Specify your domain as the value. Defaults to [host] when not set.
   final String? origin;
 
   /// This parameter controls whether videos play inline or fullscreen in an HTML5 player on iOS.
@@ -112,6 +110,19 @@ class YoutubePlayerParams {
   /// The user agent for the player.
   final String? userAgent;
 
+  /// Uses the privacy-enhanced `youtube-nocookie.com` domain instead of `youtube.com`.
+  ///
+  /// YouTube will not store information about visitors on your web page
+  /// unless they play the video. Default is true.
+  final bool privacyEnhancedMode;
+
+  /// Interval in milliseconds at which the player polls for current time and
+  /// loaded fraction while the video is playing.
+  ///
+  /// Smaller values give smoother position updates at the cost of more
+  /// JS↔Dart bridge traffic. Defaults to 100 (10 Hz).
+  final int videoStateUpdateInterval;
+
   /// Custom callback that will be called in the YoutubePlayerController's navigation delegate
   final Function(String)? customErrorCallback;
 
@@ -120,7 +131,7 @@ class YoutubePlayerParams {
     this.mute = false,
     this.captionLanguage = 'en',
     this.enableCaption = true,
-    this.pointerEvents = PointerEvents.initial,
+    this.pointerEvents = .initial,
     this.color = 'white',
     this.showControls = true,
     this.enableKeyboard = kIsWeb,
@@ -129,10 +140,12 @@ class YoutubePlayerParams {
     this.interfaceLanguage = 'en',
     this.showVideoAnnotations = true,
     this.loop = false,
-    this.origin = 'https://www.youtube.com',
+    this.origin,
     this.playsInline = true,
     this.strictRelatedVideos = false,
     this.userAgent,
+    this.privacyEnhancedMode = true,
+    this.videoStateUpdateInterval = 100,
     this.customErrorCallback,
   });
 
@@ -151,7 +164,6 @@ class YoutubePlayerParams {
       'hl': interfaceLanguage,
       'iv_load_policy': showVideoAnnotations ? 1 : 3,
       'loop': _boolean(loop),
-      'modestbranding': '1',
       if (kIsWeb) ...{
         'origin': Uri.base.origin,
         'widget_referrer': Uri.base.origin,
@@ -164,8 +176,65 @@ class YoutubePlayerParams {
     };
   }
 
+  /// The YouTube host URL, based on [privacyEnhancedMode].
+  String get host => privacyEnhancedMode
+      ? 'https://www.youtube-nocookie.com'
+      : 'https://www.youtube.com';
+
   /// The serialized JSON representation of the [YoutubePlayerParams].
   String toJson() => jsonEncode(toMap());
+
+  // Sentinel used by copyWith to distinguish "set to null" from "not provided"
+  // for nullable fields.
+  static const Object _sentinel = Object();
+
+  /// Returns a copy of this params with the given fields replaced.
+  ///
+  /// To explicitly set a nullable field to null, pass `null` for that argument.
+  YoutubePlayerParams copyWith({
+    bool? mute,
+    String? captionLanguage,
+    bool? enableCaption,
+    PointerEvents? pointerEvents,
+    String? color,
+    bool? showControls,
+    bool? enableKeyboard,
+    bool? enableJavaScript,
+    bool? showFullscreenButton,
+    String? interfaceLanguage,
+    bool? showVideoAnnotations,
+    bool? loop,
+    Object? origin = _sentinel,
+    bool? playsInline,
+    bool? strictRelatedVideos,
+    Object? userAgent = _sentinel,
+    bool? privacyEnhancedMode,
+    int? videoStateUpdateInterval,
+    Function(String)? customErrorCallback,
+  }) {
+    return YoutubePlayerParams(
+      mute: mute ?? this.mute,
+      captionLanguage: captionLanguage ?? this.captionLanguage,
+      enableCaption: enableCaption ?? this.enableCaption,
+      pointerEvents: pointerEvents ?? this.pointerEvents,
+      color: color ?? this.color,
+      showControls: showControls ?? this.showControls,
+      enableKeyboard: enableKeyboard ?? this.enableKeyboard,
+      enableJavaScript: enableJavaScript ?? this.enableJavaScript,
+      showFullscreenButton: showFullscreenButton ?? this.showFullscreenButton,
+      interfaceLanguage: interfaceLanguage ?? this.interfaceLanguage,
+      showVideoAnnotations: showVideoAnnotations ?? this.showVideoAnnotations,
+      loop: loop ?? this.loop,
+      origin: origin == _sentinel ? this.origin : origin as String?,
+      playsInline: playsInline ?? this.playsInline,
+      strictRelatedVideos: strictRelatedVideos ?? this.strictRelatedVideos,
+      userAgent: userAgent == _sentinel ? this.userAgent : userAgent as String?,
+      privacyEnhancedMode: privacyEnhancedMode ?? this.privacyEnhancedMode,
+      videoStateUpdateInterval:
+          videoStateUpdateInterval ?? this.videoStateUpdateInterval,
+      customErrorCallback: customErrorCallback ?? this.customErrorCallback,
+    );
+  }
 
   int _boolean(bool value) => value ? 1 : 0;
 }
@@ -175,17 +244,29 @@ enum PointerEvents {
   /// The player reacts to pointer events, like hover and click.
   auto('auto'),
 
+  /// The player inherits pointer-events from its parent.
+  inherit('inherit'),
+
   /// The initial configuration for pointer event.
   ///
   /// In most cases, this resolves to [PointerEvents.auto].
   initial('initial'),
 
   /// The player does not react to any pointer events.
-  none('none');
+  none('none'),
 
-  /// Creates a [PointerEvents] for the [name].
-  const PointerEvents(this.name);
+  /// Reverts pointer-events to the browser/user stylesheet value.
+  revert('revert'),
 
-  /// The name of the [PointerEvents].
-  final String name;
+  /// Reverts pointer-events to the previous cascade layer value.
+  revertLayer('revert-layer'),
+
+  /// Leaves pointer-events unset.
+  unset('unset');
+
+  /// Creates a [PointerEvents] value with its CSS representation.
+  const PointerEvents(this.cssValue);
+
+  /// CSS value written into the hosted player HTML.
+  final String cssValue;
 }
