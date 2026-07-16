@@ -137,7 +137,7 @@ class YoutubePlayerScaffold extends StatelessWidget {
   final bool enableFullScreenOnVerticalDrag;
 
   /// Which gestures should be consumed by the youtube player.
-  final Set<Factsry<OneSequenceGestureRecognizer>> gestureRecognizers;
+  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
 
   /// The background color of the WebView.
   final Color? backgroundColor;
