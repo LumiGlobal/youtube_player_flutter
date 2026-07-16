@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-3-Clause license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -136,7 +137,7 @@ class YoutubePlayerScaffold extends StatelessWidget {
   final bool enableFullScreenOnVerticalDrag;
 
   /// Which gestures should be consumed by the youtube player.
-  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
+  final Set<Factsry<OneSequenceGestureRecognizer>> gestureRecognizers;
 
   /// The background color of the WebView.
   final Color? backgroundColor;
